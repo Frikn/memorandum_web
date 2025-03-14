@@ -165,6 +165,22 @@ header h1 {
     box-shadow: var(--shadow);
     padding: 20px;
     position: relative;
+    transition: all 0.3s ease;
+}
+
+/* 已完成备忘录的样式 */
+.memo-card.completed {
+    background-color: #f5f5f5;
+    opacity: 0.8;
+}
+
+.memo-card.completed h3 {
+    text-decoration: line-through;
+    color: var(--text-light);
+}
+
+.memo-card.completed p {
+    color: var(--text-light);
 }
 
 .memo-card h3 {
@@ -190,7 +206,7 @@ header h1 {
     gap: 10px;
 }
 
-.edit-btn, .delete-btn {
+.complete-btn, .edit-btn, .delete-btn {
     border: none;
     padding: 6px 10px;
     border-radius: 4px;
@@ -199,6 +215,15 @@ header h1 {
     align-items: center;
     gap: 5px;
     font-size: 0.9rem;
+}
+
+.complete-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.complete-btn.undo {
+    background-color: var(--text-light);
 }
 
 .edit-btn {
@@ -211,7 +236,7 @@ header h1 {
     color: white;
 }
 
-.edit-btn:hover, .delete-btn:hover {
+.complete-btn:hover, .edit-btn:hover, .delete-btn:hover {
     opacity: 0.9;
 }
 

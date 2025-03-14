@@ -127,14 +127,16 @@ function getSampleMemos() {
             title: '欢迎使用备忘录',
             content: '这是一个示例备忘录。您可以添加、编辑和删除备忘录。',
             date: new Date().toISOString().split('T')[0],
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
+            completed: false
         },
         {
             id: '2',
             title: '购物清单',
             content: '1. 水果\n2. 蔬菜\n3. 牛奶\n4. 面包',
             date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
+            completed: false
         }
     ];
 }
@@ -159,7 +161,8 @@ async function addMemo() {
         title,
         content,
         date: date || new Date().toISOString().split('T')[0],
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        completed: false
     };
     
     /* 注释掉网络请求部分
@@ -298,47 +301,15 @@ async function saveMemoEdit() {
         updated_at: new Date().toISOString()
     };
     
-    /* 注释掉网络请求部分
-    try {
-        const response = await fetch(`${API_URL}/${editingMemoId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedMemo),
-            credentials: 'include'
-        });
-        
-        if (!response.ok) {
-            throw new Error('更新备忘录失败');
-        }
-        
-        const updatedMemoFromServer = await response.json();
-        
-        // 更新本地数组
-        const index = memos.findIndex(m => m.id === editingMemoId);
-        if (index !== -1) {
-            memos[index] = updatedMemoFromServer;
-        }
-        
-        renderMemos();
-        resetMemoForm();
-        
-        showNotification('备忘录更新成功', 'success');
-    } catch (error) {
-        console.error('更新备忘录失败:', error);
-        showNotification('更新备忘录失败，请稍后再试', 'error');
-    }
-    */
-    
     // 模拟更新备忘录（本地存储）
     try {
         // 更新本地数组
         const index = memos.findIndex(m => m.id === editingMemoId);
         if (index !== -1) {
-            // 保留id和created_at
+            // 保留id、created_at和completed状态
             updatedMemo.id = memos[index].id;
             updatedMemo.created_at = memos[index].created_at;
+            updatedMemo.completed = memos[index].completed || false;
             memos[index] = updatedMemo;
         }
         
@@ -372,22 +343,33 @@ function renderMemos() {
     
     sortedMemos.forEach(memo => {
         const memoCard = document.createElement('div');
-        memoCard.className = 'memo-card';
+        memoCard.className = memo.completed ? 'memo-card completed' : 'memo-card';
         
         // 判断是否已过期
         const isOverdue = memo.date && new Date(memo.date) < new Date() && new Date(memo.date).setHours(0,0,0,0) !== new Date().setHours(0,0,0,0);
-        if (isOverdue) {
+        if (isOverdue && !memo.completed) {
             memoCard.classList.add('overdue');
         }
         
         // 格式化日期
         const dueDateText = memo.date ? formatDate(memo.date) : '无截止日期';
         
+        // 设置完成按钮文本和类名
+        const completeButtonText = memo.completed ? 
+            '<i class="fas fa-undo"></i> 取消完成' : 
+            '<i class="fas fa-check"></i> 完成';
+        const completeButtonClass = memo.completed ? 
+            'complete-btn undo' : 
+            'complete-btn';
+        
         memoCard.innerHTML = `
             <h3>${memo.title}</h3>
             <div class="memo-date">${dueDateText}</div>
             <p>${memo.content.replace(/\n/g, '<br>')}</p>
             <div class="card-actions">
+                <button class="${completeButtonClass}" onclick="toggleComplete('${memo.id}')">
+                    ${completeButtonText}
+                </button>
                 <button class="edit-btn" onclick="startEditMemo('${memo.id}')">
                     <i class="fas fa-edit"></i> 编辑
                 </button>
@@ -630,35 +612,21 @@ async function saveEditedMemo() {
 }
 
 // 切换备忘录完成状态
-async function toggleComplete(id) {
-    const memo = getMemoById(id);
-    if (!memo) return;
-    
-    try {
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                completed: !memo.completed
-            }),
-            credentials: 'include'
-        });
+function toggleComplete(id) {
+    const index = memos.findIndex(memo => memo.id === id);
+    if (index !== -1) {
+        // 切换完成状态
+        memos[index].completed = !memos[index].completed;
         
-        if (response.status === 401) {
-            window.location.href = 'login.html';
-            return;
-        }
+        // 保存到本地存储
+        localStorage.setItem('memos', JSON.stringify(memos));
         
-        if (!response.ok) {
-            throw new Error('更新备忘录状态失败');
-        }
+        // 重新渲染列表
+        renderMemos();
         
-        await fetchMemos();
-    } catch (error) {
-        console.error('更新备忘录状态时出错:', error);
-        showNotification('更新备忘录状态失败，请稍后再试', 'error');
+        // 显示通知
+        const status = memos[index].completed ? '已完成' : '未完成';
+        showNotification(`备忘录已标记为${status}`, 'success');
     }
 }
 
