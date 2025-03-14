@@ -77,10 +77,15 @@ header {
 }
 
 header h1 {
-    color: var(--primary-color);
-    font-size: 1.8rem;
+    color: var(--text-color);
+    font-size: 2.5rem;
     margin: 0;
     text-align: center;
+    font-weight: bold;
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Source Han Sans CN', sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
 }
 
 /* 备忘录输入区域 */
