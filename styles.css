@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #4a6da7;
+    --secondary-color: #8e44ad;
+    --accent-color: #f39c12;
+    --text-color: #2c3e50;
+    --light-bg: #ecf0f1;
+    --white: #ffffff;
+    --completed-bg: #f1f1f1;
+    --delete-color: #e74c3c;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+
+body {
+    font-family: 'Comic Sans MS', 'Yuanti SC', 'YouYuan', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+header {
+    background-color: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+h1 {
+    color: var(--primary-color);
+    margin: 1rem 0;
+    font-size: 2rem;
+    position: relative;
+    font-family: 'Comic Sans MS', 'Yuanti SC', 'YouYuan', 'Microsoft YaHei', sans-serif;
+}
+
+h1:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    border-radius: 2px;
+}
+
+.datetime-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.date, .time {
+    background-color: var(--light-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 150px;
+    text-align: center;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.memo-input {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 109, 167, 0.2);
+    outline: none;
+}
+
+textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.input-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.date-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date-input label {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+button:hover {
+    background-color: #395785;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.add-btn {
+    background-color: var(--accent-color);
+}
+
+.add-btn:hover {
+    background-color: #e67e22;
+}
+
+.memo-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.memo-item {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.memo-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--primary-color);
+}
+
+.memo-item h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.memo-item p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.memo-date {
+    font-size: 0.9rem;
+    color: #888;
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+.memo-item .memo-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.memo-item button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.delete-btn {
+    background-color: var(--delete-color);
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* 已完成备忘录的样式 */
+.memo-item.completed {
+    background-color: var(--completed-bg);
+    opacity: 0.7;
+}
+
+.memo-item.completed::before {
+    background-color: #888;
+}
+
+.memo-item.completed h3, 
+.memo-item.completed p {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.empty-message {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    color: #888;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow);
+}
+
+@media (max-width: 600px) {
+    .input-actions {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .datetime-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+} 
