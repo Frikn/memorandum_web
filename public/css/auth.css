@@ -1,4 +1,17 @@
 /* 认证相关样式 */
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #50b7f5;
+    --accent-color: #5c6bc0;
+    --danger-color: #e53935;
+    --success-color: #43a047;
+    --text-color: #333;
+    --light-bg: #f9f9f9;
+    --white: #ffffff;
+    --border-radius: 8px;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 .auth-container {
     background-color: var(--white);
     padding: 2rem;
@@ -176,16 +189,29 @@
 }
 
 .logout-btn {
-    background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: var(--danger-color, #e53935);
+    border: none;
     color: white;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .logout-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #c62828;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn i {
+    font-size: 1.1rem;
 }
 
 /* 响应式设计 */
@@ -194,4 +220,48 @@
         margin: 2rem auto;
         padding: 1.5rem;
     }
+}
+
+/* 忘记密码链接 */
+.forgot-password {
+    margin-top: 5px;
+    text-align: right;
+    font-size: 0.9em;
+}
+
+.forgot-password a {
+    color: #4a69bd;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* 表单帮助文本 */
+.form-help {
+    font-size: 0.85em;
+    color: #555;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+/* 成功消息 */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* 重置按钮 */
+.reset-btn {
+    background-color: #2980b9;
+}
+
+.reset-btn:hover {
+    background-color: #3498db;
 } 
